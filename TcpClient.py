@@ -6,7 +6,8 @@ client=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 #connect the client
 client.connect((target_host,target_port))
 #send some data
-client.send("GET /HTTP/1.1\r\nHost:0.0.0.0\r\n\r\n".encode(encoding='utf-8'))
+client.send(b"GET / HTTP/1.1\r\nHost: 0.0.0.0\r\n\r\n")
 #recieve some response
 response=client.recv(4096)
-print(response)
+print(response.decode())
+client.close()
