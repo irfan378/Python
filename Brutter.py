@@ -5,10 +5,10 @@ import sys
 
 AGENT="Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0"
 EXTENSIONS = ['.php', '.bak', '.orig', '.inc']
-TARGET = "https://google.com"
 THREADS = 50
-WORDLIST="/usr/share/wordlist/SecLists/Discovery/Web-Content/big.txt"
+
 def get_words(resume=None):
+    WORDLIST=sys.argv[1]
     def extend_words(word):
         if "." in word:
             words.put(f'/{word}')
@@ -32,6 +32,7 @@ def get_words(resume=None):
             extend_words(word)
     return words
 def dir_bruter(words):
+    TARGET = sys.argv[2]
     headers = {'User-Agent': AGENT}
     while not words.empty():
         url = f'{TARGET}{words.get()}'
@@ -49,9 +50,13 @@ def dir_bruter(words):
 
     
 if __name__ == '__main__':
-    words=get_words()
-    print('Press return to continue.')
-    sys.stdin.readline()
-    for _ in range(THREADS):
-        t=threading.Thread(target=dir_bruter,args=(words,))
-        t.start()
+    if len(sys.argv)==3:
+        words=get_words()
+        print('Press return to continue.')
+        sys.stdin.readline()
+        for _ in range(THREADS):
+            t = threading.Thread(target=dir_bruter, args=(words,))
+            t.start()
+    else:
+        print("Please Provide wordlist and Target")
+        print("For Example: python3 Brutter.py /usr/share/wordlist.txt https://google.com")
