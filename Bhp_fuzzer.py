@@ -7,7 +7,7 @@ class BurpExtender(IBurpExtender,IIntruderPayloadGeneratorFactory):
     def registerExtenderCallbacks(self,callbacks):
         self._callbacks=callbacks
         self._helpers=callbacks.getHelpers()
-        callbacks.registerIntruderPayloadGenerator(self)
+        callbacks.registerIntruderPayloadGeneratorFactory(self)
         return
     def getGeneratorName(self):
         return "BHP Payload Generator"
